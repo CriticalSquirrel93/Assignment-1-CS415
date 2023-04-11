@@ -14,12 +14,12 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
     public PickupSpawner pickupSpawner;
+    public float jumpStrength = 0;
 
 
     private Rigidbody _rb;
-    private int count;
-    private int maxJumpCount;
-    private int jumpCount;
+    private int _count;
+    private int _remainingJumps;
 
     private float _movementX;
     private float _movementY;
@@ -29,26 +29,22 @@ public class PlayerController : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
 
-        count = 0;
-        jumpCount = 0;
-        maxJumpCount = 2;
+        _count = 0;
+        _remainingJumps = 2;
         
         SetCountText();
         
         winTextObject.SetActive(false);
     }
-    
-    void Update ()
-    {
-        if (Input.GetKeyDown ("space") && (jumpCount < maxJumpCount)) {
-            Vector3 jump = new Vector3 (0.0f, 400.0f, 0.0f);
 
-            GetComponent<Rigidbody>().AddForce(jump);
-            jumpCount++;
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && _remainingJumps > 0)
+        {
+            _rb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+            _remainingJumps--;
         }
     }
-
-
 
     private void OnMove(InputValue movementValue)
     {
@@ -70,20 +66,22 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("PickUp"))
         {
             other.gameObject.SetActive(false);
-            count += 1;
-            if (jumpCount > 0)
-                jumpCount--;
+            _count += 1;
 
-            
             SetCountText();
+        }
+
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            _remainingJumps = 2;
         }
     }
 
     void SetCountText()
     {
-        countText.text = "Count: " + count.ToString();
-        Debug.Log("Count: " + count + ", Max: " + pickupSpawner.spawnCount);
-        if (count >= pickupSpawner.spawnCount)
+        countText.text = "Count: " + _count.ToString();
+        Debug.Log("Count: " + _count + ", Max: " + pickupSpawner.spawnCount);
+        if (_count >= pickupSpawner.spawnCount)
         {
             winTextObject.SetActive(true);
         }

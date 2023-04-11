@@ -82,8 +82,8 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        Debug.Log("Count: " + count + ", Max: " + pickupSpawner.SpawnCount);
-        if (count >= pickupSpawner.SpawnCount)
+        Debug.Log("Count: " + count + ", Max: " + pickupSpawner.spawnCount);
+        if (count >= pickupSpawner.spawnCount)
         {
             winTextObject.SetActive(true);
         }

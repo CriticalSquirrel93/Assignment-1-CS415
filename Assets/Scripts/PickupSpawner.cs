@@ -8,11 +8,11 @@ public class PickupSpawner : MonoBehaviour
 
     public GameObject pickUp;
     
-    public int SpawnCount;
+    public int spawnCount;
     public double radius;
 
-    private float x;
-    private float y;
+    private float _x;
+    private float _y;
     
     private float _angle;
 
@@ -21,12 +21,12 @@ public class PickupSpawner : MonoBehaviour
     {
         _angle = 0;
         // Divide 360 by SpawnCount, Calculate position based on degrees
-        for (int i = 0; i < SpawnCount; i++)
+        for (int i = 0; i < spawnCount; i++)
         {
-            x = Convert.ToSingle(radius * Math.Sin(Math.PI * 2 * _angle / 360));
-            y = Convert.ToSingle(radius * Math.Cos(Math.PI * 2 * _angle / 360));
-            Instantiate(pickUp, new Vector3(x, 1, y), Quaternion.identity);
-            _angle += 360 / SpawnCount;
+            _x = Convert.ToSingle(radius * Math.Sin(Math.PI * 2 * _angle / 360));
+            _y = Convert.ToSingle(radius * Math.Cos(Math.PI * 2 * _angle / 360));
+            Instantiate(pickUp, new Vector3(_x, 1, _y), Quaternion.identity);
+            _angle += 360 / spawnCount;
         }
     }
 }
